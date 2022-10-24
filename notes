@@ -1,0 +1,171 @@
+## Why use google java formatter
+
+## Why use version 1.7
+* Because it works with Java 8
+
+## Why use AOSP style
+* Because it uses 4 spaces for indentation
+* Plus the only difference between GOOGLE style and AOSP style is https://github.com/google/google-java-format/issues/718
+
+## What it doesn't do
+* Force line terminator
+* Blank line between import groups
+* Covered by <importOrder> configuration
+* Blank line at the end of class definition
+
+## IDE supports
+* ECLIPSE plugin
+* Intellij plugin
+* VS CODE
+* Covert indentation to white spaces
+
+## Reference
+* https://google.github.io/styleguide/javaguide.html
+* https://github.com/google/google-java-format/tree/master
+* https://github.com/diffplug/spotless/tree/main/plugin-maven
+* https://www.sethvargo.com/using-google-java-format-with-vs-code/
+* https://github.com/diffplug/spotless/issues/178
+* https://eaftan.github.io/import-order/
+* Regarding turning off format: https://github.com/google/google-java-format/issues/137
+
+## Examples
+* https://github.com/search?l=Maven+POM&q=spotless&type=Code
+  * https://github.com/VladFernoaga/spotless-java-demo/blob/be3db20bdc9a54cd642d8356fd675b5f0f23b09b/pom.xml
+
+## Trial
+* D:\wei\dev\java\external\cinema\src\main\java>java -jar c:\Users\13172\Downloads\google-java-format-1.15.0-all-deps.jar -i -a io\pillopl\cinema\reservation\*.java
+* D:\wei\dev\java\external\cinema\src\main\java>java -jar c:\Users\13172\Downloads\google-java-format-1.15.0-all-deps.jar -i -a io\pillopl\cinema\reservation\DontLeaveSingleEmptySeat.java
+* Format specific files
+  * mvn spotless:apply -DspotlessFiles=my/file/pattern.java,more/generic/.*-pattern.java
+  * https://github.com/diffplug/spotless/blob/main/plugin-maven/src/test/java/com/diffplug/spotless/maven/SpecificFilesTest.java
+
+
+## Notes
+```
+C:\Users\13172\Downloads>java -jar google-java-format-1.15.0-all-deps.jar
+no files were provided
+
+Usage: google-java-format [options] file(s)
+
+Options:
+-i, -r, -replace, --replace
+    Send formatted output back to files, not stdout.
+-
+    Format stdin -> stdout
+--assume-filename, -assume-filename
+    File name to use for diagnostics when formatting standard input (default is <stdin>).
+--aosp, -aosp, -a
+    Use AOSP style instead of Google Style (4-space indentation).
+--fix-imports-only
+    Fix import order and remove any unused imports, but do no other formatting.
+--skip-sorting-imports
+    Do not fix the import order. Unused imports will still be removed.
+--skip-removing-unused-imports
+    Do not remove unused imports. Imports will still be sorted.
+--skip-reflowing-long-strings
+    Do not reflow string literals that exceed the column limit.
+--skip-javadoc-formatting
+    Do not reformat javadoc.
+--dry-run, -n
+    Prints the paths of the files whose contents would change if the formatter were run normally.
+--set-exit-if-changed
+    Return exit code 1 if there are any formatting changes.
+--lines, -lines, --line, -line
+    Line range(s) to format, like 5:10 (1-based; default is all).
+--offset, -offset
+    Character offset to format (0-based; default is all).
+--length, -length
+    Character length to format.
+--help, -help, -h
+    Print this usage statement.
+--version, -version, -v
+    Print the version.
+@<filename>
+    Read options and filenames from file.
+
+If -i is given with -, the result is sent to stdout.
+The --lines, --offset, and --length flags may be given more than once.
+The --offset and --length flags must be given an equal number of times.
+If --lines, --offset, or --length are given, only one file (or -) may be given.
+
+google-java-format: Version 1.15.0
+https://github.com/google/google-java-format
+```
+
+
+ <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+		    <ratchetFrom>${git.branch}</ratchetFrom>
+                    <formats>
+                        <format>
+                            <includes>
+                                <include>*.md</include>
+                                <include>*.xml</include>
+                                <include>**/*.json</include>
+                                <include>.gitignore</include>
+                            </includes>
+                            <!-- define the steps to apply to those files -->
+                            <trimTrailingWhitespace />
+                            <endWithNewline />
+                            <indent>
+                                <spaces>true</spaces>
+                                <spacesPerTab>4</spacesPerTab>
+                            </indent>
+                            <!--
+                            <indent>
+                                <tabs>true</tabs>
+                                <spacesPerTab>4</spacesPerTab>
+                            </indent>
+                        -->
+                        </format>
+                    </formats>
+                    <java>
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                            <include>src/test/java/**/*.java</include>
+                        </includes>
+                        <excludes></excludes>
+                        <googleJavaFormat>
+                            <version>${google.formatter.version}</version>
+                            <style>AOSP</style>
+                            <!--
+                            <reflowLongStrings>true</reflowLongStrings> //
+                            -->
+                        </googleJavaFormat>
+                        <toggleOffOn>
+                            <off>formatter:off</off>
+                            <on>formatter:on</on>
+                        </toggleOffOn>
+                        <importOrder>
+                            <order>java,javax,com,org</order>
+                        </importOrder>
+                        <endWithNewline />
+                    </java>
+                </configuration>
+                <!--
+                <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>compile</phase>
+                        </execution>
+                </executions>
+            -->
+            </plugin>
+      
+      <properties>
+		<java.version>11</java.version>
+		<spotless.version>2.27.2</spotless.version>
+		<google.formatter.version>1.7</google.formatter.version>
+		 <git.branch>NONE</git.branch>
+	</properties>
+	
+usage: mvn spotless:apply -Dgit.branch=origin/main
