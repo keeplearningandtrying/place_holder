@@ -1,0 +1,6 @@
+<configuration>
+                    <jasperClassDebugInfo>false</jasperClassDebugInfo>
+                    <generateCompilationReport>true</generateCompilationReport>
+                    <sourceDirectory>src/main/webapp</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/compiled-jsp</outputDirectory>
+                </configuration>
