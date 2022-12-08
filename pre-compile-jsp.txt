@@ -1,6 +1,17 @@
-<configuration>
-                    <jasperClassDebugInfo>false</jasperClassDebugInfo>
-                    <generateCompilationReport>true</generateCompilationReport>
-                    <sourceDirectory>src/main/webapp</sourceDirectory>
-                    <outputDirectory>${project.build.directory}/compiled-jsp</outputDirectory>
-                </configuration>
+var responseJSON = JSON.parse(responseBody);
+
+tests['Response contains "user" property'] = responseJSON.hasOwnProperty('user');
+
+var user = responseJSON.user || {};
+
+tests['User has "email" property'] = user.hasOwnProperty('email');
+tests['User has "username" property'] = user.hasOwnProperty('username');
+tests['User has "bio" property'] = user.hasOwnProperty('bio');
+tests['User has "image" property'] = user.hasOwnProperty('image');
+tests['User has "token" property'] = user.hasOwnProperty('token');
+
+if(tests['User has "token" property']){
+    pm.globals.set('token', user.token);
+}
+
+tests['Global variable "token" has been set'] = pm.globals.get('token') === user.token;
